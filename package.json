@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "build:micromark-extension-spoiler": "cd micromark-extension-spoiler && npm run build",
+    "build:remark-spoiler": "cd remark-spoiler && npm run build",
+    "build:mdast-util-spoiler": "cd mdast-util-spoiler && npm run build",
+    "build": "npm run build:micromark-extension-spoiler && npm run build:mdast-util-spoiler && npm run build:remark-spoiler",
+    "test:micromark-extension-spoiler": "cd micromark-extension-spoiler && npm run test",
+    "test:remark-spoiler": "cd remark-spoiler && npm run test",
+    "test:mdast-util-spoiler": "cd mdast-util-spoiler && npm run test",
+    "test": "npm run test:micromark-extension-spoiler && npm run test:mdast-util-spoiler && npm run test:remark-spoiler"
+  }
+}
