@@ -181,7 +181,6 @@ function runTestSuite_fromMarkdown(contextMsg: string, descPrefix: string, testS
         // check for match
         assert.strictEqual(citations.length, testCase.expectValue.length);
         for (let k = 0; k < citations.length; k++) {
-          // cite items
           assert.strictEqual(citations[k].value, testCase.expectValue[k]);
         }
       });

@@ -64,6 +64,6 @@ function runTestSuite(contextMsg: string, descPrefix: string, testSuite: TestSui
 
 ////////////////////////////////////////////////////////////
 
-describe('micromark-extension-cite', () => {
+describe('micromark-extension-spoiler', () => {
   runTestSuite('Spoilers', 'spoiler', spoilerSuite);
 });
