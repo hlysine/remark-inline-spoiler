@@ -54,6 +54,6 @@
     "unist-util-visit": "^3.0.1"
   },
   "dependencies": {
-    "micromark-extension-spoiler": "file:../micromark-extension-spoiler"
+    "micromark-extension-spoiler": "^1.0.0"
   }
 }
