@@ -127,13 +127,22 @@ var spoilerTokenize = function spoilerTokenize(effects, ok, nok) {
   function consumeSpoilerText(code) {
     // match first ending '|'
     if (code === 124) {
-      return effects.check(lookaheadConstruct, firstSpoilerEnd, consumeSpoilerText)(code);
+      return effects.check(lookaheadConstruct, firstSpoilerEnd, consumeAsText)(code);
     }
 
     if (code === null) {
       return nok(code);
     } // otherwise, continue consuming characters
 
+
+    effects.consume(code);
+    return consumeSpoilerText;
+  }
+
+  function consumeAsText(code) {
+    if (code === null) {
+      return nok(code);
+    }
 
     effects.consume(code);
     return consumeSpoilerText;

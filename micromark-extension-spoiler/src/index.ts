@@ -186,13 +186,22 @@ const spoilerTokenize: Tokenize = function (
   function consumeSpoilerText(code: number): State | void {
     // match first ending '|'
     if (code === 124) {
-      return effects.check(lookaheadConstruct as any, firstSpoilerEnd, consumeSpoilerText)(code);
+      return effects.check(lookaheadConstruct as any, firstSpoilerEnd, consumeAsText)(code);
     }
     if (code === null) {
       return nok(code);
     }
 
     // otherwise, continue consuming characters
+    effects.consume(code);
+    return consumeSpoilerText;
+  }
+
+  function consumeAsText(code: number): State | void {
+    if (code === null) {
+      return nok(code);
+    }
+
     effects.consume(code);
     return consumeSpoilerText;
   }

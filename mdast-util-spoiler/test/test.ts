@@ -133,6 +133,10 @@ export const fromMarkdownTestCases: TestFromMd[] = [
     markdown: '||foo||abc||bar||',
     expectValue: ['foo', 'bar'],
   },
+  {
+    markdown: '||foo|abc|bar||',
+    expectValue: ['foo|abc|bar'],
+  },
 ];
 
 export const fromMarkdownTestSuite: TestSuite<TestFromMd> = {

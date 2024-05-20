@@ -37,6 +37,10 @@ const spoilerCases: TestCaseSimple[] = [
     markdown: '||foo||abc||bar||',
     html: '<p><span class="spoiler">foo</span>abc<span class="spoiler">bar</span></p>',
   },
+  {
+    markdown: '||foo|abc|bar||',
+    html: '<p><span class="spoiler">foo|abc|bar</span></p>',
+  },
 ];
 
 const spoilerSuite: TestSuite = {
