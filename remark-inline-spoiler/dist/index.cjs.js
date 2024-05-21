@@ -16,7 +16,8 @@ function remarkV13Warning(context) {
   return warningIssued;
 }
 
-function spoilerPlugin(options) {
+function spoilerPlugin() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var data = this.data(); // warn for earlier versions
 
   remarkV13Warning(this);

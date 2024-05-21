@@ -4,6 +4,6 @@ interface SpoilerPluginOptions {
     syntax: Partial<SpoilerSyntaxOptions>;
     toMarkdown: Partial<SpoilerToMarkdownOptions>;
 }
-declare function spoilerPlugin(this: any, options: Partial<SpoilerPluginOptions>): void;
+declare function spoilerPlugin(this: any, options?: Partial<SpoilerPluginOptions>): void;
 export { SpoilerPluginOptions, spoilerPlugin };
 //# sourceMappingURL=index.umd.d.ts.map
