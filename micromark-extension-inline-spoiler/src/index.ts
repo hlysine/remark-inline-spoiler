@@ -100,13 +100,13 @@ export interface SpoilerSyntaxOptions {}
 /**
  * Adds support for Discord-style spoilers to `micromark`.
  */
-export const spoilerSyntax = function (options?: Partial<SpoilerSyntaxOptions>): SyntaxExtension {
+export const spoilerSyntax = function (options: Partial<SpoilerSyntaxOptions> = {}): SyntaxExtension {
   return {
     text: {
       [124]: { tokenize: spoilerTokenize },
     } as unknown as SyntaxExtension['text'],
   };
-} as (options: Partial<SpoilerSyntaxOptions>) => MM.SyntaxExtension;
+} as (options?: Partial<SpoilerSyntaxOptions>) => MM.SyntaxExtension;
 
 const lookaheadConstruct = {
   partial: true,
