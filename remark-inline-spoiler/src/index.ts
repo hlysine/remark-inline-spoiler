@@ -24,7 +24,7 @@ export interface SpoilerPluginOptions {
   // add extra options here, in addition to those for the syntax extension
 }
 
-export default function spoilerPlugin(this: any, options: Partial<SpoilerPluginOptions> = {}) {
+export function spoilerPlugin(this: any, options: Partial<SpoilerPluginOptions> = {}) {
   var data = this.data();
 
   // warn for earlier versions
@@ -39,3 +39,5 @@ export default function spoilerPlugin(this: any, options: Partial<SpoilerPluginO
     else data[field] = [value];
   }
 }
+
+export default spoilerPlugin;
