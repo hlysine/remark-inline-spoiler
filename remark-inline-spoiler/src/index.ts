@@ -39,3 +39,5 @@ export function spoilerPlugin(this: any, options: Partial<SpoilerPluginOptions> 
     else data[field] = [value];
   }
 }
+
+export default spoilerPlugin;
