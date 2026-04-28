@@ -1,13 +1,7 @@
 {
   "private": true,
-  "scripts": {
-    "build:micromark-extension-inline-spoiler": "cd micromark-extension-inline-spoiler && npm run build",
-    "build:remark-inline-spoiler": "cd remark-inline-spoiler && npm run build",
-    "build:mdast-util-inline-spoiler": "cd mdast-util-inline-spoiler && npm run build",
-    "build": "npm run build:micromark-extension-inline-spoiler && npm run build:mdast-util-inline-spoiler && npm run build:remark-inline-spoiler",
-    "test:micromark-extension-inline-spoiler": "cd micromark-extension-inline-spoiler && npm run test",
-    "test:remark-inline-spoiler": "cd remark-inline-spoiler && npm run test",
-    "test:mdast-util-inline-spoiler": "cd mdast-util-inline-spoiler && npm run test",
-    "test": "npm run test:micromark-extension-inline-spoiler && npm run test:mdast-util-inline-spoiler && npm run test:remark-inline-spoiler"
-  }
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {}
 }

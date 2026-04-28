@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "nodenext",
+    "lib": ["es6", "dom", "es2019"],
+    "noEmit": true,
+    "strict": true,
+
+    "moduleResolution": "nodenext",
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}

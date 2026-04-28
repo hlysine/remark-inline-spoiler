@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n={enter:{spoiler:s},exit:{spoiler:l,spoilerText:u}};function i(e){return e[e.length-1]}function s(e){this.enter({type:"spoiler",value:""},e),this.buffer()}function l(e){const t=this.resume(),o=i(this.stack);o.value=t,this.exit(e)}function u(e){}function c(e={}){const t=[{character:"|",inConstruct:["spoilerText"]}];function o(r,p,a){return`||${r.value}||`}return{unsafe:t,handlers:{spoiler:o}}}exports.spoilerFromMarkdown=n;exports.spoilerToMarkdown=c;
+//# sourceMappingURL=index.cjs.js.map
