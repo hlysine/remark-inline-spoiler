@@ -16,11 +16,11 @@ import * as mdastSpoilerExt from '../src';
 ////////////////////////////////////////////////////////////////////////////////
 
 export function unistIsParent(node: Uni.Node): node is Uni.Parent {
-  return Boolean(node.children);
+  return 'children' in node;
 }
 
 export function unistIsStringLiteral(node: Uni.Node): node is Uni.Literal & { value: string } {
-  return typeof node.value === 'string';
+  return 'value' in node && typeof node.value === 'string';
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 const { defineConfig } = require('vite');
 const { resolve } = require('node:path');
+const dts = require('vite-plugin-dts').default;
 
 const pkg = require('./package.json');
 
@@ -33,4 +34,5 @@ module.exports = defineConfig({
       },
     },
   },
+  plugins: [dts()],
 });

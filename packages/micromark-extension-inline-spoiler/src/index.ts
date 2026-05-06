@@ -7,6 +7,8 @@ import { resolveAll } from 'micromark-util-resolve-all';
 import { codes, constants, types } from 'micromark-util-symbol';
 import { SyntaxExtension } from 'micromark/dist/shared-types';
 
+export * from './html';
+
 export { spoiler };
 export type { SpoilerOptions };
 

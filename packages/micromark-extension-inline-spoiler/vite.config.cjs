@@ -1,5 +1,6 @@
 const { defineConfig } = require('vite');
 const { resolve } = require('node:path');
+const dts = require('vite-plugin-dts').default;
 
 const pkg = require('./package.json');
 
@@ -23,7 +24,7 @@ module.exports = defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'MicromarkExtensionInlineSpoiler',
       formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => {
+      fileName: format => {
         if (format === 'es') return 'index.esm.js';
         if (format === 'cjs') return 'index.cjs.js';
 
@@ -38,4 +39,5 @@ module.exports = defineConfig({
       },
     },
   },
+  plugins: [dts()],
 });

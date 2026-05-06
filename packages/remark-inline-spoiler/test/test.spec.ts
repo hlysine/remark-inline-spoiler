@@ -2,14 +2,12 @@
 import unified from 'unified';
 import * as Uni from 'unist';
 import markdown from 'remark-parse';
-import remark2markdown from 'remark-stringify';
 import { describe, it } from 'vitest';
 import { expect } from 'vitest';
 var remarkStringify = require('remark-stringify');
 
 // project imports
 import { SpoilerNode } from 'mdast-util-inline-spoiler';
-import { spoiler as spoilerSyntax, SpoilerOptions as SpoilerSyntaxOptions } from 'micromark-extension-inline-spoiler';
 import { spoilerPlugin as remarkSpoilerPlugin } from '../src';
 
 // re-use tests from mdast-util-inline-spoiler
@@ -18,11 +16,11 @@ import * as MdastUtilSpoilerTests from '../../mdast-util-inline-spoiler/test/tes
 ////////////////////////////////////////////////////////////
 
 export function unistIsParent(node: Uni.Node): node is Uni.Parent {
-  return Boolean(node.children);
+  return 'children' in node;
 }
 
 export function unistIsStringLiteral(node: Uni.Node): node is Uni.Literal & { value: string } {
-  return typeof node.value === 'string';
+  return 'value' in node && typeof node.value === 'string';
 }
 
 ////////////////////////////////////////////////////////////
