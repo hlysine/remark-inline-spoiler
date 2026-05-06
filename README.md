@@ -12,4 +12,4 @@ For more information, see the individual folders for each package.
 
 ## Contributing
 
-Pull requests for bugfixes or new features / options are welcome.  Be aware that changes to the syntax extension `micromark-extension-inline-spoiler` may also have an impact on the other two packages, and you will need to test all three.z
+Pull requests for bugfixes or new features / options are welcome.  Be aware that changes to the syntax extension `micromark-extension-inline-spoiler` may also have an impact on the other two packages, and you will need to test all three.
