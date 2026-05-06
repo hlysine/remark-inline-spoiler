@@ -1,7 +1,5 @@
 // Modified from https://jsr.io/@qz/micromark-extension-spoiler
-
-import { HtmlExtension } from 'micromark/dist/shared-types';
-import { HtmlExtension as HtmlExtensionType } from 'micromark-util-types';
+import { HtmlExtension } from 'micromark-util-types';
 
 export { spoilerHtml };
 export type { SpoilerHtmlOptions };
@@ -45,7 +43,7 @@ function spoilerHtml(options?: SpoilerHtmlOptions): HtmlExtension {
   const openingTag = options?.openingTag ?? '<span class="spoiler">';
   const closingTag = options?.closingTag ?? '</span>';
 
-  const ret: HtmlExtensionType = {
+  return {
     enter: {
       spoiler() {
         this.tag(openingTag);
@@ -57,5 +55,4 @@ function spoilerHtml(options?: SpoilerHtmlOptions): HtmlExtension {
       },
     },
   };
-  return ret as HtmlExtension;
 }

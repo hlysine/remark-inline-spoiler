@@ -1,17 +1,17 @@
 // // testing
-import { describe, it, assert } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 // mdast / unist
 import * as Uni from 'unist';
-import fromMarkdown from 'mdast-util-from-markdown';
-import toMarkdown from 'mdast-util-to-markdown';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { toMarkdown } from 'mdast-util-to-markdown';
 
 ////////////////////////////////////////////////////////////
 
 // project imports
-import { spoiler as spoilerSyntax, SpoilerOptions as SpoilerSyntaxOptions } from 'micromark-extension-inline-spoiler';
-import { SpoilerToMarkdownOptions, SpoilerNode } from '../src';
-import * as mdastSpoilerExt from '../src';
+import { spoiler as spoilerSyntax } from 'micromark-extension-inline-spoiler';
+import { spoilerFromMarkdown, spoilerToMarkdown, Spoiler } from '../src';
+import { Paragraph, PhrasingContent, Root } from 'mdast';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -96,24 +96,21 @@ export function visitNodeType<S extends string, N extends Uni.Node & { type: S }
 
 ////////////////////////////////////////////////////////////
 
-export interface TestCase<Opts> {
+export interface TestCase {
   description?: string;
-  options?: Partial<Opts>;
 }
 
-export interface TestFromMd extends TestCase<SpoilerSyntaxOptions> {
+export interface TestFromMd extends TestCase {
   markdown: string; // markdown input
-  expectValue: SpoilerNode['value'][]; // one per expected citation in the input
+  expectValue: Spoiler['children'][]; // one per expected citation in the input
 }
 
-export interface TestToMd extends TestCase<SpoilerToMarkdownOptions> {
-  ast: SpoilerNode; // citation node
+export interface TestToMd extends TestCase {
+  ast: Spoiler; // citation node
   expected: string; // expected markdown output
 }
 
-export interface TestSuite<T extends TestCase<any>, Opts = T['options']> {
-  /** Default options for the entire test suite.  Can be overridden by individual cases. */
-  options?: Opts;
+export interface TestSuite<T extends TestCase> {
   cases: T[];
 }
 
@@ -122,23 +119,208 @@ export interface TestSuite<T extends TestCase<any>, Opts = T['options']> {
 export const fromMarkdownTestCases: TestFromMd[] = [
   {
     markdown: '||abc||',
-    expectValue: ['abc'],
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'abc',
+          position: {
+            start: {
+              line: 1,
+              column: 3,
+              offset: 2,
+            },
+            end: {
+              line: 1,
+              column: 6,
+              offset: 5,
+            },
+          },
+        },
+      ],
+    ],
   },
   {
     markdown: 'foo||abc||bar',
-    expectValue: ['abc'],
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'abc',
+          position: {
+            start: {
+              line: 1,
+              column: 6,
+              offset: 5,
+            },
+            end: {
+              line: 1,
+              column: 9,
+              offset: 8,
+            },
+          },
+        },
+      ],
+    ],
   },
   {
     markdown: '||foo||abc||bar||',
-    expectValue: ['foo', 'bar'],
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'foo',
+          position: {
+            start: {
+              line: 1,
+              column: 3,
+              offset: 2,
+            },
+            end: {
+              line: 1,
+              column: 6,
+              offset: 5,
+            },
+          },
+        },
+      ],
+      [
+        {
+          type: 'text',
+          value: 'bar',
+          position: {
+            start: {
+              line: 1,
+              column: 13,
+              offset: 12,
+            },
+            end: {
+              line: 1,
+              column: 16,
+              offset: 15,
+            },
+          },
+        },
+      ],
+    ],
   },
   {
     markdown: '||foo|abc|bar||',
-    expectValue: ['foo|abc|bar'],
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'foo|abc|bar',
+          position: {
+            start: {
+              line: 1,
+              column: 3,
+              offset: 2,
+            },
+            end: {
+              line: 1,
+              column: 14,
+              offset: 13,
+            },
+          },
+        },
+      ],
+    ],
   },
   {
     markdown: '||abcde\nabcde\nabcde\nabcde\nabcde||',
-    expectValue: ['abcde\nabcde\nabcde\nabcde\nabcde'],
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'abcde\nabcde\nabcde\nabcde\nabcde',
+          position: {
+            start: {
+              line: 1,
+              column: 3,
+              offset: 2,
+            },
+            end: {
+              line: 5,
+              column: 6,
+              offset: 31,
+            },
+          },
+        },
+      ],
+    ],
+  },
+  {
+    markdown: '||abc **def** ghi||',
+    expectValue: [
+      [
+        {
+          type: 'text',
+          value: 'abc ',
+          position: {
+            start: {
+              line: 1,
+              column: 3,
+              offset: 2,
+            },
+            end: {
+              line: 1,
+              column: 7,
+              offset: 6,
+            },
+          },
+        },
+        {
+          type: 'strong',
+          children: [
+            {
+              type: 'text',
+              value: 'def',
+              position: {
+                start: {
+                  line: 1,
+                  column: 9,
+                  offset: 8,
+                },
+                end: {
+                  line: 1,
+                  column: 12,
+                  offset: 11,
+                },
+              },
+            },
+          ],
+          position: {
+            start: {
+              line: 1,
+              column: 7,
+              offset: 6,
+            },
+            end: {
+              line: 1,
+              column: 14,
+              offset: 13,
+            },
+          },
+        },
+        {
+          type: 'text',
+          value: ' ghi',
+          position: {
+            start: {
+              line: 1,
+              column: 14,
+              offset: 13,
+            },
+            end: {
+              line: 1,
+              column: 18,
+              offset: 17,
+            },
+          },
+        },
+      ],
+    ],
   },
 ];
 
@@ -150,11 +332,16 @@ export const fromMarkdownTestSuite: TestSuite<TestFromMd> = {
 
 export const toMarkdownTestCases: TestToMd[] = [
   {
-    expected: '||abc||',
     ast: {
       type: 'spoiler',
-      value: 'abc',
+      children: [
+        {
+          type: 'text',
+          value: 'abc',
+        },
+      ],
     },
+    expected: '||abc||',
   },
 ];
 
@@ -170,26 +357,20 @@ function runTestSuite_fromMarkdown(contextMsg: string, descPrefix: string, testS
     for (let testCase of testSuite.cases) {
       let desc = `[${descPrefix} ${('00' + ++idx).slice(-3)}] ` + (testCase.description || '');
       it(desc, () => {
-        // merge suite options with case options
-        const options = Object.assign({}, testSuite.options, testCase.options);
-
         // markdown -> ast
         const ast = fromMarkdown(testCase.markdown, {
-          extensions: [spoilerSyntax(options)],
-          mdastExtensions: [mdastSpoilerExt.spoilerFromMarkdown],
+          extensions: [spoilerSyntax()],
+          mdastExtensions: [spoilerFromMarkdown()],
         });
 
         // accumulate citations
-        let citations: SpoilerNode[] = [];
-        visitNodeType(ast, 'spoiler', (node: SpoilerNode) => {
-          citations.push(node);
+        let citations: PhrasingContent[][] = [];
+        visitNodeType(ast, 'spoiler', (node: Spoiler) => {
+          citations.push(node.children);
         });
 
         // check for match
-        assert.strictEqual(citations.length, testCase.expectValue.length);
-        for (let k = 0; k < citations.length; k++) {
-          assert.strictEqual(citations[k].value, testCase.expectValue[k]);
-        }
+        expect(citations).toEqual(testCase.expectValue);
       });
     }
   });
@@ -203,28 +384,25 @@ function runTestSuite_toMarkdown(contextMsg: string, descPrefix: string, testSui
     for (let testCase of testSuite.cases) {
       let desc = `[${descPrefix} ${('00' + ++idx).slice(-3)}] ` + (testCase.description || '');
       it(desc, () => {
-        // merge suite options with case options
-        const options = Object.assign({}, testSuite.options, testCase.options);
-
         // ast nodes will normally appear in paragraph
         // context, which can affect symbol escaping
-        const paragraph: Uni.Parent = {
+        const paragraph: Paragraph = {
           type: 'paragraph',
           children: [testCase.ast],
         };
 
-        const root = {
+        const root: Root = {
           type: 'root',
           children: [paragraph],
         };
 
         // markdown -> ast
         const serialized = toMarkdown(root, {
-          extensions: [mdastSpoilerExt.spoilerToMarkdown(options)],
+          extensions: [spoilerToMarkdown()],
         });
 
         // check for match
-        assert.strictEqual(serialized.trim(), testCase.expected);
+        expect(serialized.trim()).toBe(testCase.expected);
       });
     }
   });

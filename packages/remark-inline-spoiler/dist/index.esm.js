@@ -1,18 +1,14 @@
-import { spoiler as n } from "micromark-extension-inline-spoiler";
-import { spoilerToMarkdown as p, spoilerFromMarkdown as t } from "mdast-util-inline-spoiler";
-var s = !1;
-function l(r) {
-  return !s && (r.Parser && r.Parser.prototype && r.Parser.prototype.blockTokenizers || r.Compiler && r.Compiler.prototype && r.Compiler.prototype.visitors) && (s = !0, console.warn("[remark-inline-spoiler] Warning: please upgrade to remark 13 to use this plugin")), s;
-}
-function u(r = {}) {
+import { spoiler as t } from "micromark-extension-inline-spoiler";
+import { spoilerFromMarkdown as a, spoilerToMarkdown as e } from "mdast-util-inline-spoiler";
+function d(i = {}) {
   var o = this.data();
-  l(this), e("micromarkExtensions", n(r.syntax || {})), e("fromMarkdownExtensions", t), e("toMarkdownExtensions", p(r.toMarkdown || {}));
-  function e(i, a) {
-    o[i] ? o[i].push(a) : o[i] = [a];
+  r("micromarkExtensions", t(i || {})), r("fromMarkdownExtensions", a()), r("toMarkdownExtensions", e());
+  function r(n, s) {
+    o[n] ? o[n].push(s) : o[n] = [s];
   }
 }
 export {
-  u as default,
-  u as spoilerPlugin
+  d as default,
+  d as spoilerPlugin
 };
 //# sourceMappingURL=index.esm.js.map

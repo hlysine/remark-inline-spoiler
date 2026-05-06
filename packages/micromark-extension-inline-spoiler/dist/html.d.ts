@@ -1,4 +1,4 @@
-import { HtmlExtension } from 'micromark/dist/shared-types';
+import { HtmlExtension } from 'micromark-util-types';
 export { spoilerHtml };
 export type { SpoilerHtmlOptions };
 /** Options for {@linkcode spoilerHtml}. */

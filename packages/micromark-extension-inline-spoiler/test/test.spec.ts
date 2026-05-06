@@ -1,8 +1,8 @@
 import { SpoilerOptions, spoiler } from '../src/index';
 import { spoilerHtml } from '../src/html';
-import micromark from 'micromark';
-import { describe, it, assert } from 'vitest';
-import { HtmlExtension, SyntaxExtension } from 'micromark/dist/shared-types';
+import { describe, it, expect } from 'vitest';
+import { Extension, HtmlExtension } from 'micromark-util-types';
+import { micromark } from 'micromark';
 
 interface TestCaseSimple {
   options?: Partial<SpoilerOptions>;
@@ -38,6 +38,10 @@ const spoilerCases: TestCaseSimple[] = [
     markdown: '||abcde\nabcde\babcde\nabcde\nabcde||',
     html: '<p><span class="spoiler">abcde\nabcde\babcde\nabcde\nabcde</span></p>',
   },
+  {
+    markdown: '||abc **def** ghi||',
+    html: '<p><span class="spoiler">abc <strong>def</strong> ghi</span></p>',
+  },
 ];
 
 const spoilerSuite: TestSuite = {
@@ -53,10 +57,10 @@ function runTestSuite(descPrefix: string, testSuite: TestSuite): void {
     it(desc, () => {
       let options = Object.assign({}, testSuite.options, testCase.options);
       let serialized = micromark(testCase.markdown, {
-        extensions: [spoiler(options) as SyntaxExtension],
+        extensions: [spoiler(options) as Extension],
         htmlExtensions: [spoilerHtml() as HtmlExtension],
       });
-      assert.strictEqual(serialized, testCase.html);
+      expect(serialized).toBe(testCase.html);
     });
   }
 }

@@ -1,4 +1,4 @@
-import { SyntaxExtension } from 'micromark/dist/shared-types';
+import { Extension } from 'micromark-util-types';
 export * from './html';
 export { spoiler };
 export type { SpoilerOptions };
@@ -57,4 +57,4 @@ interface SpoilerOptions {
  * console.log(result) // <p>A <span class="spoiler">B</span></p>
  * ```
  */
-declare function spoiler(options?: Partial<SpoilerOptions>): SyntaxExtension;
+declare function spoiler(options?: Partial<SpoilerOptions>): Extension;

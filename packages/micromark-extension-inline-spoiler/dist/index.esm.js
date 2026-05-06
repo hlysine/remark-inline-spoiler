@@ -1,9 +1,9 @@
 import { splice as m } from "micromark-util-chunked";
 import { classifyCharacter as h } from "micromark-util-classify-character";
-import { resolveAll as A } from "micromark-util-resolve-all";
-import { codes as j, types as S, constants as d } from "micromark-util-symbol";
-function _(n) {
-  const o = (n == null ? void 0 : n.openingTag) ?? '<span class="spoiler">', u = (n == null ? void 0 : n.closingTag) ?? "</span>";
+import { resolveAll as b } from "micromark-util-resolve-all";
+import { codes as A, types as S, constants as d } from "micromark-util-symbol";
+function O(l) {
+  const o = (l == null ? void 0 : l.openingTag) ?? '<span class="spoiler">', u = (l == null ? void 0 : l.closingTag) ?? "</span>";
   return {
     enter: {
       spoiler() {
@@ -17,35 +17,35 @@ function _(n) {
     }
   };
 }
-function w(n) {
-  const o = (n == null ? void 0 : n.code) ?? j.verticalBar, u = {
+function _(l) {
+  const o = (l == null ? void 0 : l.code) ?? A.verticalBar, u = {
     name: "spoiler",
-    tokenize: q,
-    resolveAll: b
+    tokenize: T,
+    resolveAll: q
   };
   return {
     text: { [o]: u },
     insideSpan: { null: [u] },
     attentionMarkers: { null: [o] }
   };
-  function q(e, i, r) {
+  function T(e, i, r) {
     const t = this.events, p = this.previous;
     let s = 0;
     return a;
-    function a(l) {
-      return p === o && t[t.length - 1][1].type !== S.characterEscape ? r(l) : (e.enter("spoilerSequenceTemporary"), c(l));
+    function a(n) {
+      return p === o && t[t.length - 1][1].type !== S.characterEscape ? r(n) : (e.enter("spoilerSequenceTemporary"), c(n));
     }
-    function c(l) {
+    function c(n) {
       const f = h(p);
-      if (l === o)
-        return s > 1 ? r(l) : (e.consume(l), s++, c);
+      if (n === o)
+        return s > 1 ? r(n) : (e.consume(n), s++, c);
       if (s !== 2)
-        return r(l);
-      const y = e.exit("spoilerSequenceTemporary"), g = h(l);
-      return y._open = !g || g === d.attentionSideAfter && !!f, y._close = !f || f === d.attentionSideAfter && !!g, i(l);
+        return r(n);
+      const y = e.exit("spoilerSequenceTemporary"), g = h(n);
+      return y._open = !g || g === d.attentionSideAfter && !!f, y._close = !f || f === d.attentionSideAfter && !!g, i(n);
     }
   }
-  function b(e, i) {
+  function q(e, i) {
     let r = -1;
     for (; ++r < e.length; )
       if (e[r][0] === "enter" && e[r][1].type === "spoilerSequenceTemporary" && e[r][1]._close) {
@@ -68,7 +68,7 @@ function w(n) {
               ["exit", e[t][1], i],
               ["enter", s, i]
             ], c = i.parser.constructs.insideSpan.null;
-            c && m(a, a.length, 0, A(c, e.slice(t + 1, r), i)), m(a, a.length, 0, [
+            c && m(a, a.length, 0, b(c, e.slice(t + 1, r), i)), m(a, a.length, 0, [
               ["exit", s, i],
               ["enter", e[r][1], i],
               ["exit", e[r][1], i],
@@ -83,7 +83,7 @@ function w(n) {
   }
 }
 export {
-  w as spoiler,
-  _ as spoilerHtml
+  _ as spoiler,
+  O as spoilerHtml
 };
 //# sourceMappingURL=index.esm.js.map

@@ -1,13 +1,12 @@
-// unified / unist / mdast/ remark
-import unified from 'unified';
+import { unified } from 'unified';
+import { PhrasingContent, Root } from 'mdast';
 import * as Uni from 'unist';
 import markdown from 'remark-parse';
-import { describe, it } from 'vitest';
-import { expect } from 'vitest';
-var remarkStringify = require('remark-stringify');
+import remarkStringify from 'remark-stringify';
+import { describe, it, expect } from 'vitest';
 
 // project imports
-import { SpoilerNode } from 'mdast-util-inline-spoiler';
+import { Spoiler } from 'mdast-util-inline-spoiler';
 import { spoilerPlugin as remarkSpoilerPlugin } from '../src';
 
 // re-use tests from mdast-util-inline-spoiler
@@ -106,26 +105,22 @@ function runTestSuite_fromMarkdown(
     for (let testCase of testSuite.cases) {
       let desc = `[${descPrefix} ${('00' + ++idx).slice(-3)}] ` + (testCase.description || '');
       it(desc, () => {
-        // merge suite options with case options
-        let syntaxOptions = Object.assign({}, testSuite.options, testCase.options);
-
         // markdown -> ast
-        const processor = unified().use(markdown).use(remarkSpoilerPlugin, { syntax: syntaxOptions });
+        const processor = unified().use(markdown).use(remarkSpoilerPlugin);
 
-        var ast = processor.parse(testCase.markdown);
-        ast = processor.runSync(ast);
+        let ast = processor.parse(testCase.markdown);
+        ast = processor.runSync(ast) as Root;
+
+        console.log(JSON.stringify(ast, null, 2));
 
         // accumulate citations
-        let citations: SpoilerNode[] = [];
-        visitNodeType(ast, 'spoiler', (node: SpoilerNode) => {
-          citations.push(node);
+        let citations: PhrasingContent[][] = [];
+        visitNodeType(ast, 'spoiler', (node: Spoiler) => {
+          citations.push(node.children);
         });
 
         // check for match
-        expect(citations.length).toBe(testCase.expectValue.length);
-        for (let k = 0; k < citations.length; k++) {
-          expect(citations[k].value).toBe(testCase.expectValue[k]);
-        }
+        expect(citations).toEqual(testCase.expectValue);
       });
     }
   });
@@ -143,16 +138,10 @@ function runTestSuite_toMarkdown(
     for (let testCase of testSuite.cases) {
       let desc = `[${descPrefix} ${('00' + ++idx).slice(-3)}] ` + (testCase.description || '');
       it(desc, () => {
-        // merge suite options with case options
-        let toMarkdownOptions = Object.assign({}, testSuite.options, testCase.options);
-
         // markdown -> ast
-        const processor = unified()
-          .use(markdown)
-          .use(remarkStringify)
-          .use(remarkSpoilerPlugin, { toMarkdown: toMarkdownOptions });
+        const processor = unified().use(markdown).use(remarkStringify).use(remarkSpoilerPlugin);
 
-        var serialized = processor.stringify(testCase.ast);
+        var serialized = processor.stringify({ type: 'root', children: [testCase.ast] });
 
         // check for match
         expect(serialized.trim()).toBe(testCase.expected);

@@ -5,7 +5,6 @@ import { splice } from 'micromark-util-chunked';
 import { classifyCharacter } from 'micromark-util-classify-character';
 import { resolveAll } from 'micromark-util-resolve-all';
 import { codes, constants, types } from 'micromark-util-symbol';
-import { SyntaxExtension } from 'micromark/dist/shared-types';
 
 export * from './html';
 
@@ -69,7 +68,7 @@ interface SpoilerOptions {
  * console.log(result) // <p>A <span class="spoiler">B</span></p>
  * ```
  */
-function spoiler(options?: Partial<SpoilerOptions>): SyntaxExtension {
+function spoiler(options?: Partial<SpoilerOptions>): Extension {
   const spoilerCode = options?.code ?? codes.verticalBar;
 
   const tokenizer: Construct = {
@@ -78,12 +77,11 @@ function spoiler(options?: Partial<SpoilerOptions>): SyntaxExtension {
     resolveAll: resolveAllSpoiler,
   };
 
-  const ret: Extension = {
+  return {
     text: { [spoilerCode]: tokenizer },
     insideSpan: { null: [tokenizer] },
     attentionMarkers: { null: [spoilerCode] },
   };
-  return ret as SyntaxExtension;
 
   function tokenizeSpoiler(this: TokenizeContext, effects: Effects, ok: State, nok: State): State {
     const events = this.events;

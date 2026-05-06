@@ -1,46 +1,48 @@
-const p = {
-  enter: {
-    spoiler: i
-  },
-  exit: {
-    spoiler: s,
-    spoilerText: l
-  }
-};
-function r(e) {
-  return e[e.length - 1];
-}
-function i(e) {
-  this.enter(
-    {
-      type: "spoiler",
-      value: ""
-    },
-    e
-  ), this.buffer();
-}
-function s(e) {
-  const t = this.resume(), n = r(this.stack);
-  n.value = t, this.exit(e);
-}
-function l(e) {
-}
-function a(e = {}) {
-  const t = [{ character: "|", inConstruct: ["spoilerText"] }];
-  function n(o, u, c) {
-    return `||${o.value}||`;
-  }
+const s = [
+  "autolink",
+  "destinationLiteral",
+  "destinationRaw",
+  "reference",
+  "titleQuote",
+  "titleApostrophe"
+];
+function f() {
   return {
-    unsafe: t,
-    handlers: {
-      // as of (2021-05-07), the typings for Handle do not reflect
-      // that the handler will be passed nodes of a specific type
-      spoiler: n
-    }
+    canContainEols: ["spoiler"],
+    enter: { spoiler: l },
+    exit: { spoiler: a }
   };
 }
+function h() {
+  return {
+    unsafe: [
+      {
+        character: "|",
+        inConstruct: "phrasing",
+        notInConstruct: s
+      }
+    ],
+    handlers: { spoiler: o }
+  };
+}
+const l = function(e) {
+  this.enter({ type: "spoiler", children: [] }, e);
+}, a = function(e) {
+  this.exit(e);
+}, o = function(e, u, n, i) {
+  const r = n.createTracker(i), c = n.enter("spoiler");
+  let t = r.move("||");
+  return t += n.containerPhrasing(e, {
+    ...r.current(),
+    before: t,
+    after: "|"
+  }), t += r.move("||"), c(), t;
+}, p = function() {
+  return "|";
+};
+o.peek = p;
 export {
-  p as spoilerFromMarkdown,
-  a as spoilerToMarkdown
+  f as spoilerFromMarkdown,
+  h as spoilerToMarkdown
 };
 //# sourceMappingURL=index.esm.js.map
